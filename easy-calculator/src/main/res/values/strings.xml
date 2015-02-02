@@ -17,4 +17,5 @@
     <string name="zero">0</string>
     <string name="equals">=</string>
     <string name="plus">+</string>
+    <string name="error">Error</string>
 </resources>
