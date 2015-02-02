@@ -22,9 +22,6 @@ public class CalculatorActivity extends Activity {
     private TextView mResultTextView;
     private List<Button> mDigitButtons;
     private List<Button> mOperatorButtons;
-    private Button mEqualsButton;
-    private String mRightOperand;
-    private String mLeftOperand;
     private OnClickNumberOrOperator mOnClickNumberOrOperatorListener;
 
     @Override
@@ -35,6 +32,7 @@ public class CalculatorActivity extends Activity {
         mDigitButtons = new ArrayList<>(10);
         mOperatorButtons = new ArrayList<>(4); // +, -, *, /
         mOnClickNumberOrOperatorListener = new OnClickNumberOrOperator();
+        mCalculator.setOperationListener(mOperationListener);
 
         final WatchViewStub stub = (WatchViewStub)findViewById(R.id.watch_view_stub);
         stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
@@ -49,8 +47,8 @@ public class CalculatorActivity extends Activity {
     }
 
     private void setEqualsListener(WatchViewStub stub) {
-        mEqualsButton = (Button) stub.findViewById(R.id.plus_btn);
-        mEqualsButton.setOnClickListener(new OnEqualsButtonListener());
+        Button equalsButton = (Button)stub.findViewById(R.id.plus_btn);
+        equalsButton.setOnClickListener(new OnEqualsButtonListener());
     }
 
     private void setDigitsListeners(WatchViewStub stub) {
@@ -98,25 +96,27 @@ public class CalculatorActivity extends Activity {
 
         @Override
         public void onClick(View v) {
-            mCalculator.setOperationListener(new OperationListener() {
-                @Override
-                public void onStart() {
-                    // Disable other buttons?
-                }
-
-                @Override
-                public void onFinishOperation(String result) {
-                    mResultTextView.setText(result);
-                }
-
-                @Override
-                public void onError() {
-                    mResultTextView.setText(getString(R.string.error));
-                }
-            });
-
-
-            mCalculator.sumTwoNumbers(mLeftOperand, mRightOperand);
+            // can't perform operation without operator, we do nothing
+            if( mCalculator.getOperator() != null) {
+                mCalculator.performOperation();
+            }
         }
     }
+
+    private OperationListener mOperationListener = new OperationListener() {
+        @Override
+        public void onStart() {
+            // Disable other buttons?
+        }
+
+        @Override
+        public void onFinishOperation(String result) {
+            mResultTextView.setText(result);
+        }
+
+        @Override
+        public void onError() {
+            mResultTextView.setText(getString(R.string.error));
+        }
+    };
 }
