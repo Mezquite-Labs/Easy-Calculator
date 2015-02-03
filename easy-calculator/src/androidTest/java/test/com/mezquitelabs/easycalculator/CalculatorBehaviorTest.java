@@ -95,6 +95,17 @@ public class CalculatorBehaviorTest {
         thenResultWillBe("4.1416");
     }
 
+    @Test
+    public void sumOperatorShouldReturn3GivenTwoOperatorsAnd3OneOperands() {
+        givenFirstOperand("1");
+        givenOperator("+");
+        givenSecondOperand("1");
+        givenOperator("+");
+        givenFirstOperand("1");
+        whenPerformsOperation();
+        thenResultWillBe("3");
+    }
+
     private void thenRightOperandShouldBe(String expectedValue) {
         assertEquals(expectedValue, mRightOperand);
     }

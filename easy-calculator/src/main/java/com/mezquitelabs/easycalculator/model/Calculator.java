@@ -13,6 +13,7 @@ public class Calculator {
     private StringBuilder mLeftOperand;
     private StringBuilder mRightOperand;
     private String mOperator;
+    private String mResult;
 
     public Calculator() {
         mCurrentIsLeftOperand = true;
@@ -53,8 +54,16 @@ public class Calculator {
 
     public void appendCurrentOperator(CharSequence nextInputText) {
         mOperator = nextInputText.toString();
-        mCurrentIsLeftOperand = false;
+        if (!mCurrentIsLeftOperand) {
+            performOperation();
+            savePreviousResultOnRightOperand(nextInputText);
+        } else {
+            mCurrentIsLeftOperand = false;
+        }
+
     }
+
+
 
     public String getOperator() {
         return mOperator;
@@ -75,11 +84,19 @@ public class Calculator {
         }
     }
 
+    private void savePreviousResultOnRightOperand(CharSequence nextInputText) {
+        mRightOperand.append(mResult);
+        mLeftOperand.setLength(0);
+        mCurrentIsLeftOperand = true;
+        mOperator = nextInputText.toString();
+    }
+
     private void finishOperation(String result) {
         mCurrentIsLeftOperand = true;
         mRightOperand.setLength(0); // Resets the value
         mOperationListener.onFinishOperation(result);
         mOperator = null;
+        mResult = result;
     }
 
     public StringBuilder getLeftOperand() {
