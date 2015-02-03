@@ -6,7 +6,6 @@ import android.support.v4.util.SparseArrayCompat;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 
 
 public class Utils {
@@ -34,17 +33,17 @@ public class Utils {
             //put("=", R.id.equals_btn);
         }};
 
-        public static int getResourceIdForDigit(int digit){
+        public static int getResourceIdForDigit(int digit) {
             int resourceId = digitsLocator.get(digit);
             return resourceId;
         }
 
-        public static int getResourceIdForOperand(String operand){
+        public static int getResourceIdForOperand(String operand) {
             int resourceId = operandsLocator.get(operand);
-                    return resourceId;
+            return resourceId;
         }
 
-        public static Collection<Integer> getResourceIdOperandList(){
+        public static Collection<Integer> getResourceIdOperandList() {
             return operandsLocator.values();
         }
 

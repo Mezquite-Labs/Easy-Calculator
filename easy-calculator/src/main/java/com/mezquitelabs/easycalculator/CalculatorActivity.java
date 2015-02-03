@@ -23,6 +23,22 @@ public class CalculatorActivity extends Activity {
     private List<Button> mDigitButtons;
     private List<Button> mOperatorButtons;
     private OnClickNumberOrOperator mOnClickNumberOrOperatorListener;
+    private OperationListener mOperationListener = new OperationListener() {
+        @Override
+        public void onStart() {
+            // Disable other buttons?
+        }
+
+        @Override
+        public void onFinishOperation(String result) {
+            mResultTextView.setText(result);
+        }
+
+        @Override
+        public void onError() {
+            mResultTextView.setText(getString(R.string.error));
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,34 +69,35 @@ public class CalculatorActivity extends Activity {
 
     private void setDigitsListeners(WatchViewStub stub) {
         // we loop through all the digits we support (0-9)
-        for(int i = 0; i < 9 ; ++i) {
+        for (int i = 0; i < 9; ++i) {
             int resourceId = Utils.NameLocator.getResourceIdForDigit(i);
-            Button digitButton = (Button) stub.findViewById(resourceId);
+            Button digitButton = (Button)stub.findViewById(resourceId);
             digitButton.setOnClickListener(mOnClickNumberOrOperatorListener);
             mDigitButtons.add(digitButton);
         }
     }
 
     private void setOperatorListeners(WatchViewStub stub) {
-        for(int resourceId : Utils.NameLocator.getResourceIdOperandList()){
-            Button operandButton = (Button) stub.findViewById(resourceId);
+        for (int resourceId : Utils.NameLocator.getResourceIdOperandList()) {
+            Button operandButton = (Button)stub.findViewById(resourceId);
             operandButton.setOnClickListener(mOnClickNumberOrOperatorListener);
             mOperatorButtons.add(operandButton);
         }
     }
 
+
     private class OnClickNumberOrOperator implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
-            TextView textView = (TextView) v;
+            TextView textView = (TextView)v;
             CharSequence nextInputText = textView.getText();
             boolean isDigit = TextUtils.isDigitsOnly(nextInputText);
 
-            if(isDigit) {
+            if (isDigit) {
                 mCalculator.appendCurrentOperand(nextInputText);
             } else {
-                if( mCalculator.getOperator() == null) {
+                if (mCalculator.getOperator() == null) {
                     mCalculator.appendCurrentOperator(nextInputText);
                 } else {
                     mCalculator.performOperation();
@@ -97,26 +114,9 @@ public class CalculatorActivity extends Activity {
         @Override
         public void onClick(View v) {
             // can't perform operation without operator, we do nothing
-            if( mCalculator.getOperator() != null) {
+            if (mCalculator.getOperator() != null) {
                 mCalculator.performOperation();
             }
         }
     }
-
-    private OperationListener mOperationListener = new OperationListener() {
-        @Override
-        public void onStart() {
-            // Disable other buttons?
-        }
-
-        @Override
-        public void onFinishOperation(String result) {
-            mResultTextView.setText(result);
-        }
-
-        @Override
-        public void onError() {
-            mResultTextView.setText(getString(R.string.error));
-        }
-    };
 }

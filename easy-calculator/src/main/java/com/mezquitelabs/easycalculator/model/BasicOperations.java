@@ -1,19 +1,26 @@
 package com.mezquitelabs.easycalculator.model;
 
-import com.mezquitelabs.easycalculator.CalculatorActivityApplication;
-import com.mezquitelabs.easycalculator.R;
-
-
 public enum BasicOperations {
-    ADD(CalculatorActivityApplication.retrieveString(R.string.plus)),
-    SUBSTRACT(CalculatorActivityApplication.retrieveString(R.string.minus)),
-    PRODUCT(CalculatorActivityApplication.retrieveString(R.string.product)),
-    DIVISION(CalculatorActivityApplication.retrieveString(R.string.division));
+    ADD("+"),
+    SUBSTRACT("-"),
+    PRODUCT("*"),
+    DIVISION("/");
 
     private String mOperator;
 
     BasicOperations(String operator) {
         mOperator = operator;
+    }
+
+    public static BasicOperations fromString(String operator) {
+        if (operator != null) {
+            for (BasicOperations basicOperations : BasicOperations.values()) {
+                if (operator.equalsIgnoreCase(basicOperations.getOperator())) {
+                    return basicOperations;
+                }
+            }
+        }
+        return null;
     }
 
     public String getOperator() {

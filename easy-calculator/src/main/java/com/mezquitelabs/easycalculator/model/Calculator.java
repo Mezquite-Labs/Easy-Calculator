@@ -14,13 +14,15 @@ public class Calculator {
     private StringBuilder mRightOperand;
     private String mOperator;
 
-    public Calculator(){
+    public Calculator() {
         mCurrentIsLeftOperand = true;
+        mLeftOperand = new StringBuilder();
+        mRightOperand = new StringBuilder();
     }
 
     public void sumTwoNumbers(String leftOperand, String rightOperand) {
         // One of the numbers is decimal, we need to perform a decimal operation
-        if(isDigitsOnly(leftOperand) && isDigitsOnly(rightOperand)) {
+        if (isDigitsOnly(leftOperand) && isDigitsOnly(rightOperand)) {
             sumTwoNumbers(new BigInteger(leftOperand), new BigInteger(rightOperand));
         } else {
             sumTwoNumbers(new BigDecimal(leftOperand), new BigDecimal(rightOperand));
@@ -28,23 +30,23 @@ public class Calculator {
     }
 
     private void sumTwoNumbers(BigInteger leftOperand, BigInteger rightOperand) {
-        String result  = String.valueOf(leftOperand.add(rightOperand));
+        String result = String.valueOf(leftOperand.add(rightOperand));
         finishOperation(result);
     }
 
-    private void sumTwoNumbers(BigDecimal leftOperand, BigDecimal rightOperand){
-        String result  = String.valueOf(leftOperand.add(rightOperand));
+    private void sumTwoNumbers(BigDecimal leftOperand, BigDecimal rightOperand) {
+        String result = String.valueOf(leftOperand.add(rightOperand));
         finishOperation(result);
     }
 
-    public void setOperationListener(OperationListener operationListener){
+    public void setOperationListener(OperationListener operationListener) {
         mOperationListener = operationListener;
     }
 
     public void appendCurrentOperand(CharSequence nextInputText) {
-        if(mCurrentIsLeftOperand) {
+        if (mCurrentIsLeftOperand) {
             mLeftOperand.append(nextInputText);
-        }else {
+        } else {
             mRightOperand.append(nextInputText);
         }
     }
@@ -54,18 +56,37 @@ public class Calculator {
         mCurrentIsLeftOperand = false;
     }
 
-    public void finishOperation(String result){
+    public String getOperator() {
+        return mOperator;
+    }
+
+    public void performOperation() {
+        String leftOperand = getLeftOperand().toString();
+        String rightOperand = getRightOperand().toString();
+
+        switch (BasicOperations.fromString(mOperator)) {
+            case ADD:
+                sumTwoNumbers(leftOperand, rightOperand);
+                break;
+            case SUBSTRACT:
+            case DIVISION:
+            case PRODUCT:
+                throw new UnsupportedOperationException();
+        }
+    }
+
+    private void finishOperation(String result) {
         mCurrentIsLeftOperand = true;
         mRightOperand.setLength(0); // Resets the value
         mOperationListener.onFinishOperation(result);
         mOperator = null;
     }
 
-    public String getOperator() {
-        return mOperator;
+    public StringBuilder getLeftOperand() {
+        return mLeftOperand;
     }
 
-    public void performOperation() {
-
+    public StringBuilder getRightOperand() {
+        return mRightOperand;
     }
 }
