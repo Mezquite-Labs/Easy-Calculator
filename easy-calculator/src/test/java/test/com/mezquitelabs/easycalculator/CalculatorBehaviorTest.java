@@ -6,15 +6,12 @@ import com.mezquitelabs.easycalculator.model.OperationListener;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
 
-
-@Config(emulateSdk = 18)
-@RunWith(RobolectricTestRunner.class)
+//
+//@Config(emulateSdk = 18)
+//@RunWith(RobolectricTestRunner.class)
 public class CalculatorBehaviorTest {
 
     private Calculator mCalculator;
@@ -105,6 +102,20 @@ public class CalculatorBehaviorTest {
         whenPerformsOperation();
         thenResultWillBe("3");
     }
+
+    @Test
+    public void sumOperatorShouldReturn4GivenThreeOperatorsAnd4OneOperands() {
+        givenFirstOperand("1");
+        givenOperator("+");
+        givenSecondOperand("1");
+        givenOperator("+");
+        givenFirstOperand("1");
+        givenOperator("+");
+        givenSecondOperand("1");
+        whenPerformsOperation();
+        thenResultWillBe("4");
+    }
+
 
     private void thenRightOperandShouldBe(String expectedValue) {
         assertEquals(expectedValue, mRightOperand);

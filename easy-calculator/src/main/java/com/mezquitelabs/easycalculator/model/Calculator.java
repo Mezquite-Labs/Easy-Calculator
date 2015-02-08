@@ -3,7 +3,7 @@ package com.mezquitelabs.easycalculator.model;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import static android.text.TextUtils.isDigitsOnly;
+import static com.mezquitelabs.easycalculator.util.Utils.isDigitsOnly;
 
 
 public class Calculator {
@@ -54,7 +54,7 @@ public class Calculator {
 
     public void appendCurrentOperator(CharSequence nextInputText) {
         mOperator = nextInputText.toString();
-        if (!mCurrentIsLeftOperand) {
+        if (canPerformOperation()) {
             performOperation();
             savePreviousResultOnRightOperand(nextInputText);
         } else {
@@ -63,6 +63,10 @@ public class Calculator {
 
     }
 
+    private boolean canPerformOperation() {
+        boolean rightOperandHasValue = mRightOperand != null && !(mRightOperand.toString().isEmpty());
+        return !mCurrentIsLeftOperand || rightOperandHasValue;
+    }
 
 
     public String getOperator() {
