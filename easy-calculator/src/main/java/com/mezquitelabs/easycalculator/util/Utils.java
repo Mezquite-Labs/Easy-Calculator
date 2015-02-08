@@ -10,6 +10,23 @@ import java.util.HashMap;
 
 public class Utils {
 
+    /**
+     * We don't care about decimals, if there is a decimal value we return false.
+     * @param digits Digits to verify if they are integers only
+     * @return true is digits, false if decimal
+     */
+    public static boolean isDigitsOnly(String digits) {
+        // This should use TextUtils but for now, we can't UnitTest that
+        // according to http://tools.android.com/tech-docs/unit-testing-support
+         for (char c : digits.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
     public static class NameLocator {
 
         private static final SparseArrayCompat<Integer> digitsLocator = new SparseArrayCompat<Integer>() {{
