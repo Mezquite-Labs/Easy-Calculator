@@ -117,6 +117,22 @@ public class CalculatorBehaviorTest {
     }
 
 
+    @Test
+    public void sumOperatorShouldReturn130GivenFourOperatorsAnd5Operands() {
+        givenFirstOperand("10");
+        givenOperator("+");
+        givenSecondOperand("10");
+        givenOperator("+");
+        givenFirstOperand("100");
+        givenOperator("+");
+        givenSecondOperand("1");
+        givenOperator("+");
+        givenSecondOperand("9");
+        whenPerformsOperation();
+        thenResultWillBe("130");
+    }
+
+
     private void thenRightOperandShouldBe(String expectedValue) {
         assertEquals(expectedValue, mRightOperand);
     }
