@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+
 //
 //@Config(emulateSdk = 18)
 //@RunWith(RobolectricTestRunner.class)
@@ -66,7 +67,7 @@ public class CalculatorBehaviorTest {
     }
 
     @Test
-    public void sumOperatorShouldOnePlusOneReturnTwo() {
+    public void sumOperationShouldOnePlusOneReturnTwo() {
         givenFirstOperand("1");
         givenOperator("+");
         givenSecondOperand("1");
@@ -75,7 +76,7 @@ public class CalculatorBehaviorTest {
     }
 
     @Test
-    public void sumOperatorShouldOnePlusMinusTwoReturnMinusOne() {
+    public void sumOperationShouldOnePlusMinusTwoReturnMinusOne() {
         givenFirstOperand("1");
         givenOperator("+");
         givenSecondOperand("-2");
@@ -84,7 +85,7 @@ public class CalculatorBehaviorTest {
     }
 
     @Test
-    public void sumOperatorShouldPiNumberPlusOneReturn4Dot1416() {
+    public void sumOperationShouldPiNumberPlusOneReturn4Dot1416() {
         givenFirstOperand("3.1416");
         givenOperator("+");
         givenSecondOperand("1");
@@ -93,43 +94,54 @@ public class CalculatorBehaviorTest {
     }
 
     @Test
-    public void sumOperatorShouldReturn3GivenTwoOperatorsAnd3OneOperands() {
-        givenFirstOperand("1");
-        givenOperator("+");
-        givenSecondOperand("1");
-        givenOperator("+");
-        givenFirstOperand("1");
+    public void sumOperationShouldReturn3GivenTwoOperatorsAnd3OneOperands() {
+        givenOperation(new String[]{"1", "+", "1", "+", "1"});
         whenPerformsOperation();
         thenResultWillBe("3");
     }
 
     @Test
-    public void sumOperatorShouldReturn4GivenThreeOperatorsAnd4OneOperands() {
-        givenFirstOperand("1");
-        givenOperator("+");
-        givenSecondOperand("1");
-        givenOperator("+");
-        givenFirstOperand("1");
-        givenOperator("+");
-        givenSecondOperand("1");
+    public void sumOperationShouldReturn4GivenThreeOperatorsAnd4OneOperands() {
+        givenOperation(new String[]{"1", "+", "1", "+", "1","+", "1"});
         whenPerformsOperation();
         thenResultWillBe("4");
     }
 
 
     @Test
-    public void sumOperatorShouldReturn130GivenFourOperatorsAnd5Operands() {
-        givenFirstOperand("10");
-        givenOperator("+");
-        givenSecondOperand("10");
-        givenOperator("+");
-        givenFirstOperand("100");
-        givenOperator("+");
-        givenSecondOperand("1");
-        givenOperator("+");
-        givenSecondOperand("9");
+    public void sumOperationShouldReturn130GivenFourOperatorsAnd5Operands() {
+        givenOperation(new String[]{"10", "+", "10", "+", "100","+", "1", "+", "9"});
         whenPerformsOperation();
         thenResultWillBe("130");
+    }
+
+    @Test
+    public void sumOperationShouldReturn130dot9GivenFourOperatorsAnd5Operands() {
+        givenOperation(new String[]{"10.1", "+", "10.3", "+", "100","+", "1.2", "+", "9.3"});
+        whenPerformsOperation();
+        thenResultWillBe("130.9");
+    }
+
+    private void givenOperation(String[] inputs) {
+        boolean firstOperator = true;
+        int counter = 0;
+        for (String input : inputs) {
+
+            if (counter % 2 == 0) {
+
+                if (firstOperator) {
+                    givenFirstOperand(input);
+                    firstOperator = false;
+                } else {
+                    givenSecondOperand(input);
+                    firstOperator = true;
+                }
+            } else {
+                givenOperator(input);
+            }
+
+            ++counter;
+        }
     }
 
 
