@@ -2,7 +2,7 @@ package com.mezquitelabs.easycalculator.model;
 
 public enum BasicOperations {
     ADD("+"),
-    SUBSTRACT("-"),
+    SUBTRACT("-"),
     PRODUCT("*"),
     DIVISION("/");
 

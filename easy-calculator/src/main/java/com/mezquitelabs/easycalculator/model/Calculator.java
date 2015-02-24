@@ -40,6 +40,26 @@ public class Calculator {
         finishOperation(result);
     }
 
+    public void subTwoNumbers(String leftOperand, String rightOperand) {
+        // If one of the numbers is decimal, we nee to perform a decimal operation
+        if(isDigitsOnly(leftOperand) && isDigitsOnly(rightOperand)) {
+            subTwoNumbers(new BigInteger(leftOperand), new BigInteger(rightOperand));
+        }
+        else {
+            subTwoNumbers(new BigDecimal(leftOperand), new BigDecimal(rightOperand));
+        }
+    }
+
+    private void subTwoNumbers(BigInteger leftOperand, BigInteger rightOperand) {
+        String result = String.valueOf(leftOperand.subtract(rightOperand));
+        finishOperation(result);
+    }
+
+    private void subTwoNumbers(BigDecimal leftOperand, BigDecimal rightOperand) {
+        String result = String.valueOf(leftOperand.subtract(rightOperand));
+        finishOperation(result);
+    }
+
     public void setOperationListener(OperationListener operationListener) {
         mOperationListener = operationListener;
     }
@@ -56,7 +76,7 @@ public class Calculator {
         mOperator = nextInputText.toString();
         if (canPerformOperation()) {
             performOperation();
-            savePreviousResultOnRightOperand(nextInputText);
+            savePreviousResultOnLeftOperand(nextInputText);
         } else {
             mCurrentIsLeftOperand = false;
         }
@@ -81,23 +101,25 @@ public class Calculator {
             case ADD:
                 sumTwoNumbers(leftOperand, rightOperand);
                 break;
-            case SUBSTRACT:
+            case SUBTRACT:
+                subTwoNumbers(leftOperand, rightOperand);
+                break;
             case DIVISION:
             case PRODUCT:
                 throw new UnsupportedOperationException();
         }
     }
 
-    private void savePreviousResultOnRightOperand(CharSequence nextInputText) {
-        mRightOperand.append(mResult);
-        mLeftOperand.setLength(0);
-        mCurrentIsLeftOperand = true;
+    private void savePreviousResultOnLeftOperand(CharSequence nextInputText) {
+        mLeftOperand.append(mResult);
+        mCurrentIsLeftOperand = false;
         mOperator = nextInputText.toString();
     }
 
     private void finishOperation(String result) {
         mCurrentIsLeftOperand = true;
         mRightOperand.setLength(0); // Resets the value
+        mLeftOperand.setLength(0);
         mOperationListener.onFinishOperation(result);
         mOperator = null;
         mResult = result;
