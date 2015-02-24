@@ -56,7 +56,7 @@ public class Calculator {
         mOperator = nextInputText.toString();
         if (canPerformOperation()) {
             performOperation();
-            savePreviousResultOnRightOperand(nextInputText);
+            savePreviousResultOnLeftOperand(nextInputText);
         } else {
             mCurrentIsLeftOperand = false;
         }
@@ -88,16 +88,16 @@ public class Calculator {
         }
     }
 
-    private void savePreviousResultOnRightOperand(CharSequence nextInputText) {
-        mRightOperand.append(mResult);
-        mLeftOperand.setLength(0);
-        mCurrentIsLeftOperand = true;
+    private void savePreviousResultOnLeftOperand(CharSequence nextInputText) {
+        mLeftOperand.append(mResult);
+        mCurrentIsLeftOperand = false;
         mOperator = nextInputText.toString();
     }
 
     private void finishOperation(String result) {
         mCurrentIsLeftOperand = true;
         mRightOperand.setLength(0); // Resets the value
+        mLeftOperand.setLength(0);
         mOperationListener.onFinishOperation(result);
         mOperator = null;
         mResult = result;
