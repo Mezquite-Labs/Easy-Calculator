@@ -44,6 +44,24 @@ public class Calculator {
         mOperationListener = operationListener;
     }
 
+    private void mulTwoNumbers(String leftOperand, String rightOperand){
+        if(isDigitsOnly(leftOperand) && isDigitsOnly(rightOperand)){
+            mulTwoNumbers(new BigInteger(leftOperand), new BigInteger(rightOperand));
+        }else{
+            mulTwoNumbers(new BigDecimal(leftOperand), new BigDecimal(rightOperand));
+        }
+    }
+
+    private void mulTwoNumbers(BigInteger leftOperand, BigInteger rightOperand){
+        String result = String.valueOf(leftOperand.multiply(rightOperand));
+        finishOperation(result);
+    }
+
+    private void mulTwoNumbers(BigDecimal leftOperand, BigDecimal rightOperand) {
+        String result = String.valueOf(leftOperand.multiply(rightOperand));
+        finishOperation(result);
+    }
+
     public void appendCurrentOperand(CharSequence nextInputText) {
         if (mCurrentIsLeftOperand) {
             mLeftOperand.append(nextInputText);
@@ -53,13 +71,13 @@ public class Calculator {
     }
 
     public void appendCurrentOperator(CharSequence nextInputText) {
-        mOperator = nextInputText.toString();
         if (canPerformOperation()) {
             performOperation();
             savePreviousResultOnLeftOperand(nextInputText);
         } else {
             mCurrentIsLeftOperand = false;
         }
+        mOperator = nextInputText.toString();
 
     }
 
@@ -81,12 +99,17 @@ public class Calculator {
             case ADD:
                 sumTwoNumbers(leftOperand, rightOperand);
                 break;
-            case SUBSTRACT:
+            case SUBTRACT:
             case DIVISION:
             case PRODUCT:
+                mulTwoNumbers(leftOperand, rightOperand);
+                break;
+            default:
                 throw new UnsupportedOperationException();
         }
     }
+
+
 
     private void savePreviousResultOnLeftOperand(CharSequence nextInputText) {
         mLeftOperand.append(mResult);
