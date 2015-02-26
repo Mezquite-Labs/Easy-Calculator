@@ -2,6 +2,7 @@ package com.mezquitelabs.easycalculator.model;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 
 import static com.mezquitelabs.easycalculator.util.Utils.isDigitsOnly;
 
@@ -40,6 +41,17 @@ public class Calculator {
         finishOperation(result);
     }
 
+    public void divTwoNumbers(String leftOperand, String rightOperand){
+            divTwoNumbers(new BigDecimal(leftOperand), new BigDecimal(rightOperand));
+    }
+
+    private void divTwoNumbers(BigDecimal leftOperand, BigDecimal rightOperand) {
+        //DECIMAL64 is a precision setting matching the IEEE 754R Decimal64 format, it's size is 16 digits
+        String result = String.valueOf(leftOperand.divide(rightOperand, MathContext.DECIMAL64));
+        finishOperation(result);
+    }
+
+
     public void setOperationListener(OperationListener operationListener) {
         mOperationListener = operationListener;
     }
@@ -53,13 +65,13 @@ public class Calculator {
     }
 
     public void appendCurrentOperator(CharSequence nextInputText) {
-        mOperator = nextInputText.toString();
         if (canPerformOperation()) {
             performOperation();
-            savePreviousResultOnRightOperand(nextInputText);
+            savePreviousResultOnLeftOperand(nextInputText);
         } else {
             mCurrentIsLeftOperand = false;
         }
+        mOperator = nextInputText.toString();
 
     }
 
@@ -81,23 +93,25 @@ public class Calculator {
             case ADD:
                 sumTwoNumbers(leftOperand, rightOperand);
                 break;
-            case SUBSTRACT:
+            case SUBTRACT:
             case DIVISION:
+                divTwoNumbers(leftOperand, rightOperand);
+                break;
             case PRODUCT:
                 throw new UnsupportedOperationException();
         }
     }
 
-    private void savePreviousResultOnRightOperand(CharSequence nextInputText) {
-        mRightOperand.append(mResult);
-        mLeftOperand.setLength(0);
-        mCurrentIsLeftOperand = true;
+    private void savePreviousResultOnLeftOperand(CharSequence nextInputText) {
+        mLeftOperand.append(mResult);
+        mCurrentIsLeftOperand = false;
         mOperator = nextInputText.toString();
     }
 
     private void finishOperation(String result) {
         mCurrentIsLeftOperand = true;
         mRightOperand.setLength(0); // Resets the value
+        mLeftOperand.setLength(0);
         mOperationListener.onFinishOperation(result);
         mOperator = null;
         mResult = result;
