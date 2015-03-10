@@ -86,6 +86,12 @@
                 android:id="@+id/prod_btn"
                 android:layout_row="1"
                 android:layout_column="3"/>
+        <Button
+            style="@style/EvenSmallButton"
+            android:text="@string/clear"
+            android:id="@+id/clear_btn"
+            android:layout_row="1"
+            android:layout_column="4"/>
 
         <Button
                 style="@style/EvenSmallButton"
