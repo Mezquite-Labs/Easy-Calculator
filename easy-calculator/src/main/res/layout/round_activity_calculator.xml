@@ -13,6 +13,8 @@
             android:text="@string/test_result"
             android:id="@+id/resultTextView"
             android:layout_marginTop="15dp"
+            android:maxLength="14"
+            android:maxLines="1"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:gravity="center|center_horizontal"

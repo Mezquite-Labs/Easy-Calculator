@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,6 +137,8 @@ public class CalculatorActivity extends Activity {
             if (mCalculator.getOperator() != null) {
                 mCalculator.performOperation();
                 mResultTextView.setText(mCalculator.getResult());
+                if(mCalculator.ismInvalidOperation()==true)
+                    Toast.makeText(getApplicationContext(), mCalculator.getmErrorMsg(), Toast.LENGTH_SHORT).show();
             }
         }
     }
