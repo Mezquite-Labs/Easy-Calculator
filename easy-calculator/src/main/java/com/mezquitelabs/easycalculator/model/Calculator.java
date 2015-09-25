@@ -204,6 +204,26 @@ public class Calculator {
     }
 
 
+    public void subTwoNumbers(String leftOperand, String rightOperand) {
+        // If one of the numbers is decimal, we nee to perform a decimal operation
+        if(isDigitsOnly(leftOperand) && isDigitsOnly(rightOperand)) {
+            subTwoNumbers(new BigInteger(leftOperand), new BigInteger(rightOperand));
+        }
+        else {
+            subTwoNumbers(new BigDecimal(leftOperand), new BigDecimal(rightOperand));
+        }
+    }
+
+    private void subTwoNumbers(BigInteger leftOperand, BigInteger rightOperand) {
+        String result = String.valueOf(leftOperand.subtract(rightOperand));
+        finishOperation(result);
+    }
+
+    private void subTwoNumbers(BigDecimal leftOperand, BigDecimal rightOperand) {
+        String result = String.valueOf(leftOperand.subtract(rightOperand));
+        finishOperation(result);
+    }
+
     public void setOperationListener(OperationListener operationListener) {
         mOperationListener = operationListener;
     }
