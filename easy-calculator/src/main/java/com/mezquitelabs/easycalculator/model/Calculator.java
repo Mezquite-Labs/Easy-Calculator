@@ -228,6 +228,24 @@ public class Calculator {
         mOperationListener = operationListener;
     }
 
+    private void mulTwoNumbers(String leftOperand, String rightOperand){
+        if(isDigitsOnly(leftOperand) && isDigitsOnly(rightOperand)){
+            mulTwoNumbers(new BigInteger(leftOperand), new BigInteger(rightOperand));
+        }else{
+            mulTwoNumbers(new BigDecimal(leftOperand), new BigDecimal(rightOperand));
+        }
+    }
+
+    private void mulTwoNumbers(BigInteger leftOperand, BigInteger rightOperand){
+        String result = String.valueOf(leftOperand.multiply(rightOperand));
+        finishOperation(result);
+    }
+
+    private void mulTwoNumbers(BigDecimal leftOperand, BigDecimal rightOperand) {
+        String result = String.valueOf(leftOperand.multiply(rightOperand));
+        finishOperation(result);
+    }
+
     public void appendCurrentOperand(CharSequence nextInputText) {
         if (mCurrentIsLeftOperand) {
             if(mLeftOperand.length()<14)
@@ -246,6 +264,7 @@ public class Calculator {
             mCurrentIsLeftOperand = false;
             mOperator = nextInputText.toString();
         }
+        mOperator = nextInputText.toString();
 
 
     }
@@ -281,6 +300,8 @@ public class Calculator {
                 throw new UnsupportedOperationException();
         }
     }
+
+
 
     private void savePreviousResultOnLeftOperand(CharSequence nextInputText) {
         mCurrentIsLeftOperand = false;
