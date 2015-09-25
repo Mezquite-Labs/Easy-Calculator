@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Easy Calculator</string>
     <string name="seven">7</string>
-    <string name="test_result">0123456789</string>
+    <string name="test_result">0</string>
     <string name="eight">8</string>
     <string name="nine">9</string>
     <string name="division">/</string>
@@ -9,6 +9,7 @@
     <string name="five">5</string>
     <string name="six">6</string>
     <string name="product">*</string>
+    <string name="clear">C</string>
     <string name="one">1</string>
     <string name="two">2</string>
     <string name="three">3</string>
