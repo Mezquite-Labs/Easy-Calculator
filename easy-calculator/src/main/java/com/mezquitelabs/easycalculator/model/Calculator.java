@@ -224,6 +224,17 @@ public class Calculator {
         finishOperation(result);
     }
 
+    public void divTwoNumbers(String leftOperand, String rightOperand){
+            divTwoNumbers(new BigDecimal(leftOperand), new BigDecimal(rightOperand));
+    }
+
+    private void divTwoNumbers(BigDecimal leftOperand, BigDecimal rightOperand) {
+        //DECIMAL64 is a precision setting matching the IEEE 754R Decimal64 format, it's size is 16 digits
+        String result = String.valueOf(leftOperand.divide(rightOperand, MathContext.DECIMAL64));
+        finishOperation(result);
+    }
+
+
     public void setOperationListener(OperationListener operationListener) {
         mOperationListener = operationListener;
     }
